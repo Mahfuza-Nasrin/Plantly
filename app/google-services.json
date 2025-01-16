@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "358608411952",
+    "project_id": "plantly-676b7",
+    "storage_bucket": "plantly-676b7.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:358608411952:android:cfed3981abaf67de0ebcf5",
+        "android_client_info": {
+          "package_name": "com.example.plantly"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAaNKgwJRSWX_wuJh7jkFOnTcQINR34hhE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

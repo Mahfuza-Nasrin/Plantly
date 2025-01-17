@@ -27,7 +27,7 @@ public class SplashScreen extends AppCompatActivity {
             @Override
             public void run() {
                 if(currentUser!=null){ // Check if the user is logged in
-                    startActivity(new Intent(SplashScreen.this, MainActivity.class));
+                    startActivity(new Intent(SplashScreen.this, HomePageActivity.class));
                     finish();
                 }
                 else{

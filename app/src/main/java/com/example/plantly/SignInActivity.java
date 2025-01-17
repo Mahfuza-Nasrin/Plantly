@@ -27,8 +27,6 @@ public class SignInActivity extends AppCompatActivity {
 
     private EditText emailEditText, passEditText;
     private String email, pass;
-    private Button btn_signIn;
-    private TextView tv_signUp,tv_forgetPassword;
     private ProgressBar progressBar;
     private FirebaseAuth auth;
 
@@ -46,9 +44,9 @@ public class SignInActivity extends AppCompatActivity {
 
         emailEditText = findViewById(R.id.email);
         passEditText = findViewById(R.id.pass);
-        btn_signIn = findViewById(R.id.btn_signIn);
-        tv_signUp = findViewById(R.id.tv_signUp);
-        tv_forgetPassword = findViewById(R.id.tv_forgetPassword);
+        Button btn_signIn = findViewById(R.id.btn_signIn);
+        TextView tv_signUp = findViewById(R.id.tv_signUp);
+        TextView tv_forgetPassword = findViewById(R.id.tv_forgetPassword);
         progressBar = findViewById(R.id.progressBar);
         auth = FirebaseAuth.getInstance();
 
@@ -73,7 +71,7 @@ public class SignInActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             if (user != null && user.isEmailVerified()) {
                                 Toast.makeText(getApplicationContext(), "Login successful!!", Toast.LENGTH_SHORT).show();
-                                startActivity(new Intent(getApplicationContext(), MainActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
+                                startActivity(new Intent(getApplicationContext(), HomePageActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
                                 finish();
                             } else {
                                 // Email not verified

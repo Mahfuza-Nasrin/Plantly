@@ -19,10 +19,10 @@ public class SplashScreen extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_splash_screen);
+
         FirebaseAuth auth = FirebaseAuth.getInstance();
-
-
         FirebaseUser currentUser = auth.getCurrentUser();
+
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {

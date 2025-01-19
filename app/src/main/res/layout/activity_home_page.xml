@@ -1,44 +1,45 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@color/app_color"
     android:orientation="vertical"
     android:padding="20dp"
-    tools:context=".HomePageActivity"
-    android:background="@color/app_color"
-    >
+    tools:context=".HomePageActivity">
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:id="@+id/layout_greetingAndSearchbar">
 
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center_vertical"
             android:layout_marginTop="16dp"
-            android:layout_marginBottom="16dp">
+            android:layout_marginBottom="5dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
 
             <ImageView
                 android:id="@+id/profileIcon"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
-                android:src="@drawable/ic_profile_placeholder"
-                android:scaleType="centerCrop"
                 android:layout_marginEnd="5dp"
-                />
+                android:scaleType="centerCrop"
+                android:src="@drawable/ic_profile_placeholder" />
+
             <TextView
                 android:id="@+id/tvGreeting"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Hello John"
+                android:text="Hello!"
+                android:textColor="@color/white"
                 android:textSize="20sp"
-                android:textStyle="bold"
-                android:textColor="@color/white"/>
+                android:textStyle="bold" />
 
 
         </LinearLayout>
@@ -53,36 +54,76 @@
             android:inputType="text"
             android:minHeight="48dp"
             android:padding="10dp"
-            app:endIconMode="custom" />
+            app:endIconMode="custom"
+            />
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:background="@drawable/border"
+        android:clipToOutline="true"
+        android:layout_below="@+id/layout_greetingAndSearchbar"
+        android:layout_marginTop="5dp"
+        android:id="@+id/layout_homeBanner"
+        >
+
+    <ImageView
+        android:id="@+id/homeBanner"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"
+        android:src="@drawable/homebanner"
+        />
+
+</LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/layout_tabLayout"
+        android:layout_width="match_parent"
+        android:layout_height="390dp"
+        android:layout_below="@+id/layout_homeBanner"
+        android:layout_marginTop="5dp"
+        android:orientation="vertical">
+
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tabLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:tabIndicator="@drawable/card"
+            app:tabIndicatorColor="@color/app_color_dark"
+            app:tabIndicatorAnimationMode="elastic"
+            app:tabIndicatorGravity="stretch"
+            app:tabMode="fixed"
+            app:tabSelectedTextColor="@color/white"
+            tools:ignore="SpeakableTextPresentCheck"
+            app:tabIndicatorFullWidth="true"
+            android:background="@drawable/border_for_tab"
+            />
+
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/viewPager2"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
 
 
     </LinearLayout>
 
-    <!-- Categories RecyclerView -->
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerViewCategories"
+
+    <LinearLayout
+        android:id="@+id/layout_bottomNav"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:orientation="horizontal" />
+        android:layout_alignParentBottom="true">
 
-    <!-- Plants RecyclerView -->
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerViewPlants"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:layout_marginTop="8dp"
-        />
+        <com.google.android.material.bottomnavigation.BottomNavigationView
+            android:id="@+id/bottomNavBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bar"
+            app:itemIconTint="@drawable/select"
+            app:itemTextColor="@drawable/select"
+            app:menu="@menu/bottom_nav_menu" />
 
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/bottomNavBar"
-        android:background="@drawable/bar"
-        app:itemTextColor="@drawable/select"
-        app:menu="@menu/bottom_nav_menu"
-        app:itemIconTint="@drawable/select"
-        />
-
-</LinearLayout>
+    </LinearLayout>
+</RelativeLayout>

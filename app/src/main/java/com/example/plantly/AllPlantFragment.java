@@ -37,6 +37,8 @@ public class AllPlantFragment extends Fragment {
         plantList.add(new PlantModel("Tulip", R.drawable.tulip_image));
         plantList.add(new PlantModel("Cactus", R.drawable.cactus_image));
         plantList.add(new PlantModel("Sunflower", R.drawable.sunflower_image));
+        plantList.add(new PlantModel("Jasmine", R.drawable.jasmine_image));
+        plantList.add(new PlantModel("Lavender", R.drawable.lavender_image));
 
         // Set up adapter
         PlantAdapter adapter = new PlantAdapter(plantList);

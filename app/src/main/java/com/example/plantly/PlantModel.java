@@ -3,7 +3,7 @@ package com.example.plantly;
 public class PlantModel {
 
 
-        private static String name;
+        private String name;
         private int imageResourceId;
 
         public PlantModel(String name, int imageResourceId) {
@@ -11,7 +11,7 @@ public class PlantModel {
             this.imageResourceId = imageResourceId;
         }
 
-        public static String getName() {
+        public  String getName() {
             return name;
         }
 

@@ -26,7 +26,7 @@ public class PlantAdapter extends RecyclerView.Adapter<PlantAdapter.PlantViewHol
     @Override
     public void onBindViewHolder(@NonNull PlantViewHolder holder, int position) {
         PlantModel plant = plantList.get(position);
-        holder.plantNameTextView.setText(PlantModel.getName());
+        holder.plantNameTextView.setText(plant.getName());
         holder.plantImageView.setImageResource(plant.getImageResourceId()); // Set image
     }
 

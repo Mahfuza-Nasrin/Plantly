@@ -4,16 +4,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/app_color"
-    android:orientation="vertical"
     android:padding="20dp"
     tools:context=".HomePageActivity">
 
+
     <LinearLayout
+        android:id="@+id/layout_greetingAndSearchbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:id="@+id/layout_greetingAndSearchbar">
-
+        android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -40,8 +39,6 @@
                 android:textColor="@color/white"
                 android:textSize="20sp"
                 android:textStyle="bold" />
-
-
         </LinearLayout>
 
         <EditText
@@ -54,59 +51,59 @@
             android:inputType="text"
             android:minHeight="48dp"
             android:padding="10dp"
-            app:endIconMode="custom"
-            />
-
+            app:endIconMode="custom" />
     </LinearLayout>
+
+
     <LinearLayout
+        android:id="@+id/layout_homeBanner"
         android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:background="@drawable/border"
-        android:clipToOutline="true"
+        android:layout_height="wrap_content"
         android:layout_below="@+id/layout_greetingAndSearchbar"
         android:layout_marginTop="5dp"
-        android:id="@+id/layout_homeBanner"
+        android:background="@drawable/border"
+        android:clipToOutline="true"
         >
 
-    <ImageView
-        android:id="@+id/homeBanner"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:scaleType="centerCrop"
-        android:src="@drawable/homebanner"
-        />
+        <ImageView
+            android:id="@+id/homeBanner"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/homebanner"
 
-</LinearLayout>
+            />
+    </LinearLayout>
+
 
     <LinearLayout
         android:id="@+id/layout_tabLayout"
         android:layout_width="match_parent"
-        android:layout_height="390dp"
+        android:layout_height="0dp"
         android:layout_below="@+id/layout_homeBanner"
-        android:layout_marginTop="5dp"
-        android:orientation="vertical">
+        android:layout_above="@+id/layout_bottomNav"
+        android:orientation="vertical"
+        android:layout_marginTop="2dp">
 
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tabLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@drawable/border_for_tab"
+            android:contentDescription="@string/app_name"
             app:tabIndicator="@drawable/card"
-            app:tabIndicatorColor="@color/app_color_dark"
             app:tabIndicatorAnimationMode="elastic"
+            app:tabIndicatorColor="@color/app_color_dark"
+            app:tabIndicatorFullWidth="true"
             app:tabIndicatorGravity="stretch"
             app:tabMode="fixed"
-            app:tabSelectedTextColor="@color/white"
-            tools:ignore="SpeakableTextPresentCheck"
-            app:tabIndicatorFullWidth="true"
-            android:background="@drawable/border_for_tab"
-            />
+            app:tabSelectedTextColor="@color/white" />
 
         <androidx.viewpager2.widget.ViewPager2
             android:id="@+id/viewPager2"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-
-
+            android:layout_height="0dp"
+            android:layout_weight="1" />
     </LinearLayout>
 
 
@@ -118,12 +115,11 @@
 
         <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/bottomNavBar"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/bar"
             app:itemIconTint="@drawable/select"
             app:itemTextColor="@drawable/select"
             app:menu="@menu/bottom_nav_menu" />
-
     </LinearLayout>
 </RelativeLayout>

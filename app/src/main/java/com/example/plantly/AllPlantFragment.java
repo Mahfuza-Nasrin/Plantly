@@ -33,12 +33,12 @@ public class AllPlantFragment extends Fragment {
 
         // Create sample data
         List<PlantModel> plantList = new ArrayList<>();
-        plantList.add(new PlantModel("Rose", R.drawable.rose_image));
-        plantList.add(new PlantModel("Tulip", R.drawable.tulip_image));
-        plantList.add(new PlantModel("Cactus", R.drawable.cactus_image));
-        plantList.add(new PlantModel("Sunflower", R.drawable.sunflower_image));
-        plantList.add(new PlantModel("Jasmine", R.drawable.jasmine_image));
-        plantList.add(new PlantModel("Lavender", R.drawable.lavender_image));
+        plantList.add(new PlantModel("Rose", R.drawable.rose_image ,100));
+        plantList.add(new PlantModel("Tulip", R.drawable.tulip_image,200));
+        plantList.add(new PlantModel("Cactus", R.drawable.cactus_image,300));
+        plantList.add(new PlantModel("Sunflower", R.drawable.sunflower_image ,400));
+        plantList.add(new PlantModel("Jasmine", R.drawable.jasmine_image,500));
+        plantList.add(new PlantModel("Lavender", R.drawable.lavender_image,600));
 
         // Set up adapter
         PlantAdapter adapter = new PlantAdapter(plantList);

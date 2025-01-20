@@ -27,6 +27,8 @@ public class PlantAdapter extends RecyclerView.Adapter<PlantAdapter.PlantViewHol
     public void onBindViewHolder(@NonNull PlantViewHolder holder, int position) {
         PlantModel plant = plantList.get(position);
         holder.plantNameTextView.setText(plant.getName());
+        String plantPrice = Integer.toString(plant.getPlantPrice());
+        holder.plantPriceTextView.setText(plantPrice + " TK");
         holder.plantImageView.setImageResource(plant.getImageResourceId()); // Set image
     }
 
@@ -36,13 +38,15 @@ public class PlantAdapter extends RecyclerView.Adapter<PlantAdapter.PlantViewHol
     }
 
     static class PlantViewHolder extends RecyclerView.ViewHolder {
-        ImageView plantImageView;
-        TextView plantNameTextView;
+        ImageView plantImageView, plantHeart;
+        TextView plantNameTextView,plantPriceTextView;
 
         public PlantViewHolder(@NonNull View itemView) {
             super(itemView);
+
             plantImageView = itemView.findViewById(R.id.plantImageView);
             plantNameTextView = itemView.findViewById(R.id.plantNameTextView);
+            plantPriceTextView = itemView.findViewById(R.id.plantPriceTextView);
         }
     }
 }

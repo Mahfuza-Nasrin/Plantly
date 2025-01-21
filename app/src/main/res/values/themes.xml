@@ -3,7 +3,10 @@
     <style name="Base.Theme.Plantly" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your light theme here. -->
         <item name="android:windowIsTranslucent">true</item>
+
     </style>
 
     <style name="Theme.Plantly" parent="Base.Theme.Plantly" />
+
+
 </resources>

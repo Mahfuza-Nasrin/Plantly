@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".CartActivity"
+    android:orientation="vertical"
+    android:background="@color/app_color"
+    android:padding="20dp">
+   <ImageView
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content"
+       android:src="@drawable/ic_arrow_back"
+       android:id="@+id/btnArrowBackCart"
+       android:background="@drawable/border"
+       android:padding="10dp"
+       android:layout_alignParentLeft="true"
+       android:layout_alignParentTop="true"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/myCartTextView"
+        android:text="My Cart"
+        android:textColor="@color/white"
+        android:textStyle="bold"
+        android:textSize="28sp"
+        android:textAppearance="@android:style/TextAppearance.Large"
+        android:layout_below="@+id/btnArrowBackCart"
+        android:layout_alignParentLeft="true"
+        android:layout_marginTop="10dp"/>
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_delete_bin"
+        android:id="@+id/btnDeleteCart"
+        android:background="@drawable/card_with_border"
+        android:padding="10dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerViewCart"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/btnReviewAddress"
+        android:layout_below="@+id/myCartTextView"
+        android:layout_marginTop="5dp"
+        android:scrollbars="vertical" />
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:focusable="true"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:padding="15dp"
+        android:id="@+id/btnReviewAddress"
+        android:clickable="true"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/checkout_btn_card"
+        >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Review Address"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            android:fontFamily="sans-serif-medium" />
+    </LinearLayout>
+</RelativeLayout>

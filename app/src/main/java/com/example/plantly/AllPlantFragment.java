@@ -7,6 +7,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,6 +24,7 @@ public class AllPlantFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_all_plant, container, false);
 
@@ -44,8 +47,10 @@ public class AllPlantFragment extends Fragment {
         PlantAdapter adapter = new PlantAdapter(plantList);
         recyclerView.setAdapter(adapter);
 
+
+
         return view;
 
-
     }
+
 }

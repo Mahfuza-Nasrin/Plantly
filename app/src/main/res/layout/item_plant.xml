@@ -31,7 +31,7 @@
         android:layout_height="100dp"
         android:layout_marginTop="5dp"
         android:scaleType="centerCrop"
-        android:src="@drawable/sample_item_img"
+        android:src="@drawable/jasmine_image"
         android:layout_gravity="center"
         />
 

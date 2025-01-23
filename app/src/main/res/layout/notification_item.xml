@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/card_with_border"
+    >
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="This is a sample notification"
+        android:textSize="20sp"
+        android:padding="10dp"
+        android:drawableStart="@drawable/ic_notification"
+        android:drawablePadding="5dp"
+        android:fontFamily="sans-serif-medium"
+        android:id="@+id/notificationTextView"/>
+
+</RelativeLayout>

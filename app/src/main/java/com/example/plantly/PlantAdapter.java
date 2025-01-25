@@ -1,4 +1,6 @@
 package com.example.plantly;
+import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -6,14 +8,20 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.squareup.picasso.Picasso;
+
+import java.util.ArrayList;
 import java.util.List;
 
 public class PlantAdapter extends RecyclerView.Adapter<PlantAdapter.PlantViewHolder> {
 
-    private List<PlantModel> plantList;
+    private ArrayList<Model> plantList;
+    private Context context;
 
-    public PlantAdapter(List<PlantModel> plantList) {
+    public PlantAdapter(Context context, ArrayList<Model> plantList) {
         this.plantList = plantList;
+        this.context = context;
     }
 
     @NonNull
@@ -25,11 +33,21 @@ public class PlantAdapter extends RecyclerView.Adapter<PlantAdapter.PlantViewHol
 
     @Override
     public void onBindViewHolder(@NonNull PlantViewHolder holder, int position) {
-        PlantModel plant = plantList.get(position);
-        holder.plantNameTextView.setText(plant.getName());
-        String plantPrice = Integer.toString(plant.getPlantPrice());
+        Model model = plantList.get(position);
+        holder.plantNameTextView.setText(model.getPlantName());
+        String plantPrice = String.valueOf(model.getPlantPrice());
         holder.plantPriceTextView.setText(plantPrice + " TK");
-        holder.plantImageView.setImageResource(plant.getImageResourceId()); // Set image
+        Picasso.get().load(model.getImageUrl()).into(holder.plantImageView);
+
+        holder.itemView.setOnClickListener(v -> {
+            Intent intent = new Intent(holder.itemView.getContext(), DescriptionActivity.class);
+            intent.putExtra("plantName", model.getPlantName());
+            intent.putExtra("plantType", model.getPlantType());
+            intent.putExtra("plantPrice", plantPrice);
+            intent.putExtra("image", model.getImageUrl());
+            intent.putExtra("key", model.getKey());
+            holder.itemView.getContext().startActivity(intent);
+        });
     }
 
     @Override

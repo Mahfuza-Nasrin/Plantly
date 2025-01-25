@@ -1,6 +1,11 @@
 package com.example.plantly;
+import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.activity.EdgeToEdge;
@@ -32,6 +37,9 @@ public class HomePageActivity extends AppCompatActivity {
     TextView tvGreeting;
     TabLayout tabLayout;
     ViewPager2 viewPager2;
+    public static ImageView searchIcon;
+    public static EditText searchEditText;
+    public static String searchPlant="";
 
 
 
@@ -41,8 +49,11 @@ public class HomePageActivity extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_home_page);
 
+
         auth = FirebaseAuth.getInstance();
         currentUser = auth.getCurrentUser();
+
+
 
         //textGreeting
 
@@ -67,6 +78,16 @@ public class HomePageActivity extends AppCompatActivity {
                 }
             });
         }
+
+
+        searchIcon = findViewById(R.id.ic_search);
+        searchEditText = findViewById(R.id.searchBar);
+       searchIcon.setOnClickListener(new View.OnClickListener() {
+           @Override
+           public void onClick(View v) {
+               searchPlant = searchEditText.getText().toString().trim();
+           }
+       });
 
 
 
@@ -118,13 +139,17 @@ public class HomePageActivity extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
 
                 if (item.getItemId() == R.id.ic_home) {
-                    Toast.makeText(HomePageActivity.this, "home button", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(HomePageActivity.this, HomePageActivity.class);
+                    startActivity(intent);
                 } else if (item.getItemId() == R.id.ic_wishlist) {
-                    Toast.makeText(HomePageActivity.this, "wishlist button", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(HomePageActivity.this, WishlistActivity.class);
+                    startActivity(intent);
                 } else if (item.getItemId() == R.id.ic_cart) {
-                    Toast.makeText(HomePageActivity.this, "cart button", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(HomePageActivity.this, CartActivity.class);
+                    startActivity(intent);
                 } else if (item.getItemId() == R.id.ic_notification) {
-                    Toast.makeText(HomePageActivity.this, "notification button", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(HomePageActivity.this, NotificationActivity.class);
+                    startActivity(intent);
                 }
 
 

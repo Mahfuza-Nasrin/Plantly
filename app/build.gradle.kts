@@ -57,5 +57,14 @@ dependencies {
     // Google Play Services Auth for Google Sign-In
     implementation(libs.play.services.auth)
 
+    //image downloading and caching library
+    implementation(libs.picasso)
+    implementation(libs.glide)
+
+    //for cloudinary
+    implementation(libs.cloudinary)
+
+
+
 
 }

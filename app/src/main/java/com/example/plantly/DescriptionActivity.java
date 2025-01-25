@@ -2,73 +2,109 @@ package com.example.plantly;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
+
+import com.squareup.picasso.Picasso;
 
 public class DescriptionActivity extends AppCompatActivity {
 
+    private ImageView btnArrowBack, descriptionPlantImageView;
+    private TextView plantNameDescription, tvPlantPrice, tvQuantity, plantTypeTextView;
+    private Button btnIncrease, btnDecrease;
+    private LinearLayout btnAddToCart, btnBuyNow;
+    private String plantName, plantType, image, plantPrice;
+    private int plantPriceInt;
 
-        private ImageView btnArrowBack, descriptionPlantImageView;
-        private TextView plantNameDescription, tvPlantPrice, tvQuantity, plantDescription;
-        private Button btnIncrease, btnDecrease;
-        private LinearLayout btnAddToCart;
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_description);
 
-        @Override
-        protected void onCreate(Bundle savedInstanceState) {
-            super.onCreate(savedInstanceState);
-            setContentView(R.layout.activity_description);
+        // Initialize views
+        btnArrowBack = findViewById(R.id.btnArrowBack);
+        descriptionPlantImageView = findViewById(R.id.descriptionPlantImageView);
+        plantNameDescription = findViewById(R.id.plantNameDescription);
+        tvPlantPrice = findViewById(R.id.tvPlantPrice);
+        tvQuantity = findViewById(R.id.tvQuantity);
+        plantTypeTextView = findViewById(R.id.plantTypeTextView);
+        btnIncrease = findViewById(R.id.btnIncrease);
+        btnDecrease = findViewById(R.id.btnDecrease);
+        btnAddToCart = findViewById(R.id.btnAddToCart);
+        btnBuyNow = findViewById(R.id.btnBuyNow);
 
+        // Get data from Intent
+        plantName = getIntent().getStringExtra("plantName");
+        plantType = getIntent().getStringExtra("plantType");
+        plantPrice = getIntent().getStringExtra("plantPrice");
+        image = getIntent().getStringExtra("image");
 
-            btnArrowBack = findViewById(R.id.btnArrowBack);
-            descriptionPlantImageView = findViewById(R.id.descriptionPlantImageView);
-            plantNameDescription = findViewById(R.id.plantNameDescription);
-            tvPlantPrice = findViewById(R.id.tvPlantPrice);
-            tvQuantity = findViewById(R.id.tvQuantity);
-            plantDescription = findViewById(R.id.plantDescription);
+        // Set data to views
+        plantNameDescription.setText(plantName);
+        plantTypeTextView.setText(plantType);
+        tvPlantPrice.setText(plantPrice + " TK");
+        Picasso.get().load(image).into(descriptionPlantImageView);
 
-            btnIncrease = findViewById(R.id.btnIncrease);
-            btnDecrease = findViewById(R.id.btnDecrease);
+        // Back button
+        btnArrowBack.setOnClickListener(v -> finish());
 
+        // Increase quantity
+        btnIncrease.setOnClickListener(v -> {
+            try {
+                int quantity = Integer.parseInt(tvQuantity.getText().toString());
+                quantity++;
+                tvQuantity.setText(String.valueOf(quantity));
+            } catch (NumberFormatException e) {
+                tvQuantity.setText("1");
+            }
+        });
 
-            btnArrowBack.setOnClickListener(v -> {
-                startActivity(new Intent(DescriptionActivity.this, HomePageActivity.class));
-                finish();
-            });
-
-
-
-            btnIncrease.setOnClickListener(v -> {
-
-                try {
-                    int quantity = Integer.parseInt(tvQuantity.getText().toString());
-                    quantity++;
-                    tvQuantity.setText(String.valueOf(quantity));
-                } catch (NumberFormatException e) {
-
-                    tvQuantity.setText("0");
-                }
-
-
-            });
-            btnDecrease.setOnClickListener(v -> {
-                try {
-                    int quantity = Integer.parseInt(tvQuantity.getText().toString());
+        // Decrease quantity
+        btnDecrease.setOnClickListener(v -> {
+            try {
+                int quantity = Integer.parseInt(tvQuantity.getText().toString());
+                if (quantity > 0) {
                     quantity--;
-                    tvQuantity.setText(String.valueOf(quantity));
-                } catch (NumberFormatException e) {
-
-                    tvQuantity.setText("0");
                 }
-            });
-        }
+                tvQuantity.setText(String.valueOf(quantity));
+            } catch (NumberFormatException e) {
+                tvQuantity.setText("1");
+            }
+        });
 
+        // Add to Cart
+        btnAddToCart.setOnClickListener(v -> {
+            String quantityStr = tvQuantity.getText().toString();
+            int quantity = quantityStr.isEmpty() ? 1 : Integer.parseInt(quantityStr);
+            if (quantity > 0) {
+                CartManager.addToCart(new CartItem(plantName, plantType, image, Integer.parseInt(plantPrice), quantity));
+                Toast.makeText(this, plantName + " added to cart!", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(this, "Please select a valid quantity", Toast.LENGTH_SHORT).show();
+            }
+        });
 
+        // Buy Now
+        btnBuyNow.setOnClickListener(v -> {
+            String quantityStr = tvQuantity.getText().toString();
+            int quantity = quantityStr.isEmpty() ? 1 : Integer.parseInt(quantityStr);
+            if (quantity > 0) {
+                Intent intent = new Intent(this, PlaceOrderActivity.class);
+                intent.putExtra("plantName", plantName);
+                intent.putExtra("plantType", plantType);
+                intent.putExtra("plantPrice", plantPrice);
+                intent.putExtra("quantity", quantityStr);
+                intent.putExtra("image", image);
+                startActivity(intent);
+            } else {
+                Toast.makeText(this, "Please select a valid quantity", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
 }

@@ -1,21 +1,14 @@
 package com.example.plantly;
 
-import static com.example.plantly.HomePageActivity.searchEditText;
-import static com.example.plantly.HomePageActivity.searchPlant;
-
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.ProgressBar;
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -25,99 +18,95 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.List;
-
-
 
 public class AllPlantFragment extends Fragment {
 
+    private DatabaseReference reference;
+    private ArrayList<Model> arrayList = new ArrayList<>();
+    private RecyclerView recyclerView;
+    private PlantAdapter adapter;
 
     public AllPlantFragment() {
-
+        // Required empty public constructor
     }
-
-    private DatabaseReference reference;
-    private ArrayList<Model> arrayList;
-
-    EditText search;
-
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_all_plant, container, false);
 
-
         // Initialize RecyclerView
+        recyclerView = view.findViewById(R.id.recyclerView);
+        recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2)); // Grid layout with 2 columns
 
-        RecyclerView recyclerView = view.findViewById(R.id.recyclerView);
-        recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2)); // 2 columns
-
-
-
-
+        // Initialize Firebase reference
         reference = FirebaseDatabase.getInstance().getReference().child("Plant Items");
-        if (!searchPlant.isEmpty()){
-            Query query = reference.orderByChild("plantName").equalTo(searchPlant); // Filter by "type" field
 
-            query.addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    arrayList = new ArrayList<>();
+        // Initialize and set adapter
+        adapter = new PlantAdapter(getContext(), arrayList);
+        recyclerView.setAdapter(adapter);
 
-                    if (snapshot.exists()) {
-                        for (DataSnapshot snapshot1 : snapshot.getChildren()) {
-                            Model data = snapshot1.getValue(Model.class);
-                            if (data != null) {
-                                arrayList.add(data);
-                            }
-                        }
-
-
-
-                        PlantAdapter adapter = new PlantAdapter(requireContext(),arrayList);
-                        recyclerView.setAdapter(adapter);
-                    }
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError error) {
-                    // Handle database error here
-                }
-            });
-            searchPlant="";
-            searchEditText.setText("");
-        } else {
-
-
-            reference.addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    arrayList = new ArrayList<>();
-
-                    if (snapshot.exists()) {
-                        for (DataSnapshot snapshot1 : snapshot.getChildren()) {
-                            Model data = snapshot1.getValue((Model.class));
-                            arrayList.add(data);
-                        }
-                        PlantAdapter adapter = new PlantAdapter(requireContext(), arrayList);
-                        recyclerView.setAdapter(adapter);
-                    }
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError error) {
-
-                }
-            });
-        }
+        // Load all plants
+        loadAllPlants();
 
         return view;
-
     }
 
+    private void loadAllPlants() {
+        reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                arrayList.clear();
+                if (snapshot.exists()) {
+                    for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                        Model data = dataSnapshot.getValue(Model.class);
+                        if (data != null) {
+                            arrayList.add(data);
+                        }
+                    }
+                    adapter.notifyDataSetChanged();
+                } else {
+                    Log.d("AllPlantFragment", "No plants found!");
+                }
+            }
 
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.e("AllPlantFragment", "Error: " + error.getMessage());
+            }
+        });
+    }
+
+    public void searchPlants(String query) {
+        Query firebaseQuery;
+        if (query.isEmpty()) {
+            firebaseQuery = reference; // Fetch all plants
+        } else {
+            firebaseQuery = reference.orderByChild("plantName").startAt(query).endAt(query + "\uf8ff"); // Search by name
+        }
+
+        firebaseQuery.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                arrayList.clear();
+                if (snapshot.exists()) {
+                    for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                        Model data = dataSnapshot.getValue(Model.class);
+                        if (data != null) {
+                            arrayList.add(data);
+                        }
+                    }
+                    adapter.notifyDataSetChanged();
+                } else {
+                    Log.d("AllPlantFragment", "No plants match the query: " + query);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.e("AllPlantFragment", "Search Error: " + error.getMessage());
+            }
+        });
+    }
 }

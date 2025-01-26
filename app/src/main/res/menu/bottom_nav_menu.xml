@@ -10,8 +10,8 @@
     <item android:id="@+id/ic_cart"
         android:title="Cart"
         android:icon="@drawable/ic_cart"/>
-    <item android:id="@+id/ic_notification"
-        android:title="Notification"
-        android:icon="@drawable/ic_notification"/>
+    <item android:id="@+id/ic_account_setting"
+        android:title="Account"
+        android:icon="@drawable/ic_account_setting"/>
 
 </menu>

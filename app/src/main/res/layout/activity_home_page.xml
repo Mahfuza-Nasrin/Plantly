@@ -41,32 +41,7 @@
                 android:textStyle="bold" />
         </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center"
-            android:background="@drawable/border">
-        <EditText
-            android:id="@+id/searchBar"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:background="@drawable/border"
-            android:hint="Search for plants"
-            android:inputType="text"
-            android:minHeight="48dp"
-            android:padding="10dp"
-            app:endIconMode="custom" />
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_search"
-                android:padding="10dp"
-                android:id="@+id/ic_search"
-            />
-    </LinearLayout>
 </LinearLayout>
 
 

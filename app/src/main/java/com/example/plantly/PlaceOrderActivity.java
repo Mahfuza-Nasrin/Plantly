@@ -1,5 +1,4 @@
 package com.example.plantly;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -12,34 +11,42 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class PlaceOrderActivity extends AppCompatActivity {
 
-    RelativeLayout layoutPlaceOrder;
+    private RelativeLayout layoutPlaceOrder;
     private ImageView btnArrowBackCart;
-    private TextView userNameTextView, emailTextView, totalPriceTextView, orderItemNameTextView,orderItemPriceTextView;
+    private TextView userNameTextView, emailTextView, totalPriceTextView, orderItemNameTextView, orderItemPriceTextView;
     private EditText deliveryAddressEditText;
     private LinearLayout btnPlaceOrder, layoutOrderSuccessful;
     private ArrayList<CartItem> orderItems;
-    FirebaseAuth auth;
-    FirebaseUser currentUser;
-    private int totalPrice = 0,quantity,itemPrice;
-    String plantName,plantType;
+    private FirebaseAuth auth;
+    private FirebaseUser currentUser;
+    private DatabaseReference reference;
+    private int totalPrice = 0;
+    private String userName, email, userId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_place_order);
 
-        // Initialize views
+
+        auth = FirebaseAuth.getInstance();
+        currentUser = auth.getCurrentUser();
+        reference = FirebaseDatabase.getInstance().getReference("Orders");
+
+
         btnArrowBackCart = findViewById(R.id.btnArrowBackCart);
         userNameTextView = findViewById(R.id.userNameTextView);
         emailTextView = findViewById(R.id.EmailTextView);
@@ -51,112 +58,115 @@ public class PlaceOrderActivity extends AppCompatActivity {
         orderItemNameTextView = findViewById(R.id.orderItemNameTextView);
         orderItemPriceTextView = findViewById(R.id.orderItemPriceTextView);
 
-        auth = FirebaseAuth.getInstance();
-        currentUser = auth.getCurrentUser();
 
         if (currentUser != null) {
-            String userId = currentUser.getUid();
+            userId = currentUser.getUid();
+            FirebaseFirestore db = FirebaseFirestore.getInstance();
+            DocumentReference df = db.collection("Users").document(userId);
+            df.get().addOnSuccessListener(documentSnapshot -> {
+                if (documentSnapshot.exists()) {
+                    userName = documentSnapshot.getString("name");
+                    email = documentSnapshot.getString("email");
 
-            DocumentReference df = FirebaseFirestore.getInstance()
-                    .collection("Users")
-                    .document(userId);
-
-            df.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-                @Override
-                public void onSuccess(DocumentSnapshot documentSnapshot) {
-                    if (documentSnapshot.exists()) {
-                        String userName = documentSnapshot.getString("name");
-                        String email = documentSnapshot.getString("email");
-
-                        userNameTextView.setText("Name:" + userName );
-                        emailTextView.setText("Email: "+email);
-
-                    }
+                    userNameTextView.setText("Name: " + userName);
+                    emailTextView.setText("Email: " + email);
                 }
             });
         }
 
 
-
-
-        // Get order details (passed from CartActivity)
         Intent intent = getIntent();
         orderItems = (ArrayList<CartItem>) intent.getSerializableExtra("orderItems");
-        if (orderItems != null) {
+
+        StringBuilder itemNamesBuilder = new StringBuilder();
+        StringBuilder itemPricesBuilder = new StringBuilder();
+
+        if (orderItems != null && !orderItems.isEmpty()) {
             for (CartItem item : orderItems) {
-                totalPrice += item.getPrice() * item.getQuantity();
-                plantName = item.getName();
-                quantity = item.getQuantity();
-                itemPrice= item.getPrice();
+                if (item.getQuantity() > 0) {
+                    int itemTotalPrice = item.getPrice() * item.getQuantity();
+                    totalPrice += itemTotalPrice;
 
 
+                    itemNamesBuilder.append(item.getQuantity()).append("x ").append(item.getName()).append("\n");
+                    itemPricesBuilder.append(itemTotalPrice).append(" Tk\n");
+                }
             }
-        }else {
-            plantName = getIntent().getStringExtra("plantName");
-            String quantityStr2 = getIntent().getStringExtra("quantity");
-            String itemPrice2 = getIntent().getStringExtra("plantPrice");
-            quantity = Integer.parseInt(quantityStr2);
-            itemPrice = Integer.parseInt(itemPrice2);
-            totalPrice+=quantity*itemPrice;
-
         }
-        String strQuantity = String.valueOf(quantity);
-        String strPrice = String.valueOf(itemPrice);
+
+
+        orderItemNameTextView.setText(itemNamesBuilder.toString().trim());
+        orderItemPriceTextView.setText(itemPricesBuilder.toString().trim());
         totalPriceTextView.setText(totalPrice + " Tk");
-        orderItemNameTextView.setText(strQuantity+"x "+plantName);
-        orderItemPriceTextView.setText(strPrice + " Tk");
 
 
-
-
-        // Back button functionality
-        btnArrowBackCart.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(PlaceOrderActivity.this, HomePageActivity.class);
-                startActivity(intent);
-            }
+        btnArrowBackCart.setOnClickListener(v -> {
+            Intent backIntent = new Intent(PlaceOrderActivity.this, HomePageActivity.class);
+            startActivity(backIntent);
+            finish();
         });
 
-        // Place Order Button Click
+
         btnPlaceOrder.setOnClickListener(v -> {
             String deliveryAddress = deliveryAddressEditText.getText().toString().trim();
             if (deliveryAddress.isEmpty()) {
                 Toast.makeText(this, "Please enter your delivery address!", Toast.LENGTH_SHORT).show();
                 return;
             }
-
-
-
-            placeOrder(deliveryAddress);
+            saveOrderToRealtimeDatabase(deliveryAddress);
         });
     }
 
-
-    private void placeOrder(String deliveryAddress) {
-        // Simulate saving the order to a database or API call here
-
-        Toast.makeText(this, "Order placed successfully!", Toast.LENGTH_SHORT).show();
+    private void saveOrderToRealtimeDatabase(String deliveryAddress) {
+        if (currentUser == null) return;
 
 
+        String orderId = reference.push().getKey();
 
-        // Display success layout
-        layoutOrderSuccessful.setVisibility(View.VISIBLE);
-        layoutPlaceOrder.setVisibility(View.GONE);
-        // Clear the cart and reset fields
-        CartManager.clearCart();
-        deliveryAddressEditText.setText("");
 
-        // Optionally, navigate back to the home screen after order placement
-        layoutOrderSuccessful.findViewById(R.id.btnDone).setOnClickListener(v -> {
-            Intent intent = new Intent(PlaceOrderActivity.this, HomePageActivity.class);
-            startActivity(intent);
-            finish();
-        });
+        Map<String, Object> orderData = new HashMap<>();
+        orderData.put("orderId", orderId);
+        orderData.put("userId", userId);
+        orderData.put("userName", userName);
+        orderData.put("email", email);
+        orderData.put("deliveryAddress", deliveryAddress);
+        orderData.put("totalPrice", totalPrice);
+
+
+        ArrayList<Map<String, Object>> orderItemsList = new ArrayList<>();
+        for (CartItem item : orderItems) {
+            if (item.getQuantity() > 0) {
+                Map<String, Object> orderItem = new HashMap<>();
+                orderItem.put("name", item.getName());
+                orderItem.put("quantity", item.getQuantity());
+                orderItem.put("price", item.getPrice());
+                orderItem.put("imageUrl", item.getImageUrl()); // Store image URL
+                orderItemsList.add(orderItem);
+            }
+        }
+        orderData.put("orderItems", orderItemsList);
+
+
+        if (orderId != null) {
+            reference.child(orderId).setValue(orderData)
+                    .addOnSuccessListener(aVoid -> {
+                        Toast.makeText(this, "Order placed successfully!", Toast.LENGTH_SHORT).show();
+
+                        // Show success layout
+                        layoutOrderSuccessful.setVisibility(View.VISIBLE);
+                        layoutPlaceOrder.setVisibility(View.GONE);
+
+                        // Clear cart
+                        CartManager.clearCart();
+                        deliveryAddressEditText.setText("");
+
+                        layoutOrderSuccessful.findViewById(R.id.btnDone).setOnClickListener(v -> {
+                            Intent intent = new Intent(PlaceOrderActivity.this, HomePageActivity.class);
+                            startActivity(intent);
+                            finish();
+                        });
+                    })
+                    .addOnFailureListener(e -> Toast.makeText(this, "Failed to place order!", Toast.LENGTH_SHORT).show());
+        }
     }
 }
-
-
-
-
-

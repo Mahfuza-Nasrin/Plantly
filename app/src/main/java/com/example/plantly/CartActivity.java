@@ -33,15 +33,15 @@ public class CartActivity extends AppCompatActivity {
         recyclerViewCart = findViewById(R.id.recyclerViewCart);
         btnReviewAddress = findViewById(R.id.btnReviewAddress);
 
-        // Get cart items
+
         cartItems = (ArrayList<CartItem>) CartManager.getCartItems();
 
-        // Set up RecyclerView
+
         recyclerViewCart.setLayoutManager(new LinearLayoutManager(this));
         cartAdapter = new CartAdapter(this, cartItems);
         recyclerViewCart.setAdapter(cartAdapter);
 
-        // Back button functionality
+
         btnArrowBackCart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -50,7 +50,7 @@ public class CartActivity extends AppCompatActivity {
             }
         });
 
-        // Delete all selected items
+
         btnDeleteCart.setOnClickListener(v -> {
             ArrayList<CartItem> selectedItems = cartAdapter.getSelectedItems();
             if (!selectedItems.isEmpty()) {
@@ -62,7 +62,7 @@ public class CartActivity extends AppCompatActivity {
             }
         });
 
-        // Navigate to Review Address
+
         btnReviewAddress.setOnClickListener(v -> {
             if (!cartItems.isEmpty()) {
                 Intent intent = new Intent(CartActivity.this, PlaceOrderActivity.class);

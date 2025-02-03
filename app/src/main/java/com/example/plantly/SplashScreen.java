@@ -18,12 +18,14 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+
 import java.util.HashMap;
 import java.util.Map;
 
+
 @SuppressLint("CustomSplashScreen")
 public class SplashScreen extends AppCompatActivity {
-
+    FirebaseFirestore firestore;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,33 +42,12 @@ public class SplashScreen extends AppCompatActivity {
         FirebaseUser currentUser = auth.getCurrentUser();
 
         new Handler().postDelayed(() -> {
-            if (currentUser != null && currentUser.isEmailVerified()) {
-                String userId = currentUser.getUid();
 
-                FirebaseFirestore.getInstance()
-                        .collection("Users")
-                        .document(userId)
-                        .get()
-                        .addOnSuccessListener(documentSnapshot -> {
-                            if (documentSnapshot.exists()) {
-                                String pass = documentSnapshot.getString("pass");
-                                String email = documentSnapshot.getString("email");
+            
 
-                                if ("AdminPass01".equals(pass) && "fardusjannatul2731@gmail.com".equals(email)) {
-
-                                    startActivity(new Intent(getApplicationContext(), ReadActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
-                                } else {
-
-                                    startActivity(new Intent(getApplicationContext(), HomePageActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
-                                }
-                                finish();
-                            }
-                        })
-                        .addOnFailureListener(e -> Log.e("Firestore", "Error fetching user document", e));
-            } else {
                 startActivity(new Intent(SplashScreen.this, MainActivity.class));
                 finish();
-            }
+
         }, 3000);
     }
 

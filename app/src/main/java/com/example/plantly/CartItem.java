@@ -22,7 +22,7 @@ public class CartItem implements Serializable {
         this.quantity = quantity;
     }
 
-    // Getters and setters (if needed)
+
     public String getName() {
         return name;
     }

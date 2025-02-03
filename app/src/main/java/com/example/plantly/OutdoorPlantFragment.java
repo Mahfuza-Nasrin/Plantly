@@ -34,14 +34,14 @@ public class OutdoorPlantFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        // Inflate the layout for this fragment
+
         View view = inflater.inflate(R.layout.fragment_outdoor_plant, container, false);
 
-        // Initialize RecyclerView
+
         RecyclerView recyclerView = view.findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2)); // 2 columns
 
-        // Reference the database and filter only indoor plants
+
         reference = FirebaseDatabase.getInstance().getReference().child("Plant Items");
         Query query = reference.orderByChild("plantType").equalTo("Outdoor"); // Filter by "type" field
 
@@ -67,7 +67,7 @@ public class OutdoorPlantFragment extends Fragment {
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                // Handle database error here
+
             }
         });
 

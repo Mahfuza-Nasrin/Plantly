@@ -2,20 +2,17 @@ package com.example.plantly;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.TextUtils;
-import android.view.MenuItem;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager2.widget.ViewPager2;
-
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.navigation.NavigationBarView;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 import com.google.firebase.auth.FirebaseAuth;
@@ -32,9 +29,8 @@ public class HomePageActivity extends AppCompatActivity {
     TextView tvGreeting;
     TabLayout tabLayout;
     ViewPager2 viewPager2;
-    public static ImageView searchIcon;
-    public static EditText searchEditText;
-    public static String searchPlant = "";
+    public static EditText etSearchBar;
+    private AllPlantFragment allPlantFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,31 +50,19 @@ public class HomePageActivity extends AppCompatActivity {
             df.get().addOnSuccessListener(documentSnapshot -> {
                 if (documentSnapshot.exists()) {
                     String userName = documentSnapshot.getString("name");
-                    if (!TextUtils.isEmpty(userName)) {
+                    if (userName != null && !userName.isEmpty()) {
                         tvGreeting.setText("Hello, " + userName + "!");
                     }
                 }
             });
         }
 
-        // Search bar and icon
-        searchIcon = findViewById(R.id.ic_search);
-        searchEditText = findViewById(R.id.searchBar);
 
-        searchIcon.setOnClickListener(v -> {
-            searchPlant = searchEditText.getText().toString().trim();
-            if (viewPager2.getCurrentItem() == 0) { // Ensure you're on the "All" tab
-                AllPlantFragment fragment = (AllPlantFragment) getSupportFragmentManager().findFragmentByTag("f" + viewPager2.getCurrentItem());
-                if (fragment != null) {
-                    fragment.searchPlants(searchPlant);
-                }
-            }
-        });
+        allPlantFragment = new AllPlantFragment();
 
-        // TabLayout and ViewPager2 setup
+
         tabLayout = findViewById(R.id.tabLayout);
         viewPager2 = findViewById(R.id.viewPager2);
-
         ViewPagerAdapter adapter = new ViewPagerAdapter(this);
         viewPager2.setAdapter(adapter);
 
@@ -96,11 +80,13 @@ public class HomePageActivity extends AppCompatActivity {
             }
         }).attach();
 
+
+
         // Bottom navigation setup
         bottomNav = findViewById(R.id.bottomNavBar);
         bottomNav.setOnItemSelectedListener(item -> {
             if (item.getItemId() == R.id.ic_home) {
-                startActivity(new Intent(HomePageActivity.this, HomePageActivity.class));
+                return true;
             } else if (item.getItemId() == R.id.ic_wishlist) {
                 startActivity(new Intent(HomePageActivity.this, WishlistActivity.class));
             } else if (item.getItemId() == R.id.ic_cart) {

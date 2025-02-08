@@ -14,6 +14,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
@@ -32,21 +33,21 @@ public class AllPlantFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
+        // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_all_plant, container, false);
 
-
+        // Initialize RecyclerView
         recyclerView = view.findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2)); // Grid layout with 2 columns
 
-
+        // Initialize Firebase reference
         reference = FirebaseDatabase.getInstance().getReference().child("Plant Items");
 
-
+        // Initialize and set adapter
         adapter = new PlantAdapter(getContext(), arrayList);
         recyclerView.setAdapter(adapter);
 
-
+        // Load all plants
         loadAllPlants();
 
         return view;
@@ -64,7 +65,7 @@ public class AllPlantFragment extends Fragment {
                             arrayList.add(data);
                         }
                     }
-                    adapter.updateList(arrayList); // Update adapter with all plants
+                    adapter.notifyDataSetChanged();
                 } else {
                     Log.d("AllPlantFragment", "No plants found!");
                 }
@@ -77,5 +78,35 @@ public class AllPlantFragment extends Fragment {
         });
     }
 
+    public void searchPlants(String query) {
+        Query firebaseQuery;
+        if (query.isEmpty()) {
+            firebaseQuery = reference; // Fetch all plants
+        } else {
+            firebaseQuery = reference.orderByChild("plantName").startAt(query).endAt(query + "\uf8ff"); // Search by name
+        }
 
+        firebaseQuery.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                arrayList.clear();
+                if (snapshot.exists()) {
+                    for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                        Model data = dataSnapshot.getValue(Model.class);
+                        if (data != null) {
+                            arrayList.add(data);
+                        }
+                    }
+                    adapter.notifyDataSetChanged();
+                } else {
+                    Log.d("AllPlantFragment", "No plants match the query: " + query);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.e("AllPlantFragment", "Search Error: " + error.getMessage());
+            }
+        });
+    }
 }

@@ -18,7 +18,7 @@ public class DescriptionActivity extends AppCompatActivity {
     private ImageView btnArrowBack, descriptionPlantImageView;
     private TextView plantNameDescription, tvPlantPrice, tvQuantity, plantTypeTextView;
     private Button btnIncrease, btnDecrease;
-    private LinearLayout btnAddToCart;
+    private LinearLayout btnAddToCart, btnBuyNow;
     private String plantName, plantType, image, plantPrice;
     private int plantPriceInt;
 
@@ -27,7 +27,7 @@ public class DescriptionActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_description);
 
-
+        // Initialize views
         btnArrowBack = findViewById(R.id.btnArrowBack);
         descriptionPlantImageView = findViewById(R.id.descriptionPlantImageView);
         plantNameDescription = findViewById(R.id.plantNameDescription);
@@ -39,22 +39,22 @@ public class DescriptionActivity extends AppCompatActivity {
         btnAddToCart = findViewById(R.id.btnAddToCart);
 
 
-
+        // Get data from Intent
         plantName = getIntent().getStringExtra("plantName");
         plantType = getIntent().getStringExtra("plantType");
         plantPrice = getIntent().getStringExtra("plantPrice");
         image = getIntent().getStringExtra("image");
 
-
+        // Set data to views
         plantNameDescription.setText(plantName);
         plantTypeTextView.setText(plantType);
         tvPlantPrice.setText(plantPrice + " TK");
         Picasso.get().load(image).into(descriptionPlantImageView);
 
-
+        // Back button
         btnArrowBack.setOnClickListener(v -> finish());
 
-
+        // Increase quantity
         btnIncrease.setOnClickListener(v -> {
             try {
                 int quantity = Integer.parseInt(tvQuantity.getText().toString());
@@ -65,7 +65,7 @@ public class DescriptionActivity extends AppCompatActivity {
             }
         });
 
-
+        // Decrease quantity
         btnDecrease.setOnClickListener(v -> {
             try {
                 int quantity = Integer.parseInt(tvQuantity.getText().toString());
@@ -78,7 +78,7 @@ public class DescriptionActivity extends AppCompatActivity {
             }
         });
 
-
+        // Add to Cart
         btnAddToCart.setOnClickListener(v -> {
             String quantityStr = tvQuantity.getText().toString();
             int quantity = quantityStr.isEmpty() ? 1 : Integer.parseInt(quantityStr);

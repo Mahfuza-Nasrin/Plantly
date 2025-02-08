@@ -46,7 +46,7 @@ public class PlaceOrderActivity extends AppCompatActivity {
         currentUser = auth.getCurrentUser();
         reference = FirebaseDatabase.getInstance().getReference("Orders");
 
-
+        // Initialize views
         btnArrowBackCart = findViewById(R.id.btnArrowBackCart);
         userNameTextView = findViewById(R.id.userNameTextView);
         emailTextView = findViewById(R.id.EmailTextView);
@@ -152,11 +152,11 @@ public class PlaceOrderActivity extends AppCompatActivity {
                     .addOnSuccessListener(aVoid -> {
                         Toast.makeText(this, "Order placed successfully!", Toast.LENGTH_SHORT).show();
 
-                        // Show success layout
+
                         layoutOrderSuccessful.setVisibility(View.VISIBLE);
                         layoutPlaceOrder.setVisibility(View.GONE);
 
-                        // Clear cart
+
                         CartManager.clearCart();
                         deliveryAddressEditText.setText("");
 

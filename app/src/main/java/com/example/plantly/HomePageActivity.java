@@ -82,13 +82,11 @@ public class HomePageActivity extends AppCompatActivity {
 
 
 
-        // Bottom navigation setup
+
         bottomNav = findViewById(R.id.bottomNavBar);
         bottomNav.setOnItemSelectedListener(item -> {
             if (item.getItemId() == R.id.ic_home) {
-                return true;
-            } else if (item.getItemId() == R.id.ic_wishlist) {
-                startActivity(new Intent(HomePageActivity.this, WishlistActivity.class));
+                startActivity(new Intent(HomePageActivity.this, HomePageActivity.class));
             } else if (item.getItemId() == R.id.ic_cart) {
                 startActivity(new Intent(HomePageActivity.this, CartActivity.class));
             } else if (item.getItemId() == R.id.ic_account_setting) {

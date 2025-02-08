@@ -36,10 +36,8 @@ public class ReadActivity extends AppCompatActivity {
     private ProgressBar progressBar;
     private DatabaseReference reference;
     private ArrayList<Model> arrayList;
-    FirebaseAuth auth;
-    FirebaseUser currentUser;
-    TextView tvGreeting;
-    ImageView accountImage;
+    ImageView btnBack;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,36 +50,8 @@ public class ReadActivity extends AppCompatActivity {
             return insets;
         });
 
-        auth = FirebaseAuth.getInstance();
-        currentUser = auth.getCurrentUser();
 
-        // Greeting text
-        tvGreeting = findViewById(R.id.tvGreeting);
-        accountImage = findViewById(R.id.profileIcon);
-        if (currentUser != null) {
-            String userId = currentUser.getUid();
-            DocumentReference df = FirebaseFirestore.getInstance().collection("Users").document(userId);
-            df.get().addOnSuccessListener(documentSnapshot -> {
-                if (documentSnapshot.exists()) {
-                    String userName = documentSnapshot.getString("name");
-                    if (!TextUtils.isEmpty(userName)) {
-                        tvGreeting.setText("Hello, " + userName + "!");
-                    }
-                }
-            });
-        }
-
-        accountImage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(ReadActivity.this, AccountManageActivity.class));
-            }
-        });
-
-
-
-
-
+        btnBack = findViewById(R.id.iv_back_all_item);
         recyclerView = findViewById(R.id.recyclerView);
         fab = findViewById(R.id.fab);
         textView = findViewById(R.id.noData);
@@ -94,9 +64,9 @@ public class ReadActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 arrayList = new ArrayList<>();
                 progressBar.setVisibility(View.GONE);
-                if (snapshot.exists()){
-                    for (DataSnapshot snapshot1:snapshot.getChildren()){
-                        Model data = snapshot1.getValue((Model.class));
+                if (snapshot.exists()) {
+                    for (DataSnapshot snapshot1 : snapshot.getChildren()) {
+                        Model data = snapshot1.getValue(Model.class);
                         arrayList.add(data);
                     }
                     CustomAdapter adapter = new CustomAdapter(arrayList, ReadActivity.this);
@@ -115,11 +85,20 @@ public class ReadActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(ReadActivity.this,CreateActivity.class);
+                Intent intent = new Intent(ReadActivity.this, CreateActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        btnBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ReadActivity.this,AdminHomePage.class);
                 startActivity(intent);
 
             }
         });
+
     }
 
 

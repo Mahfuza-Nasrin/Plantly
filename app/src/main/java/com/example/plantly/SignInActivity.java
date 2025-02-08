@@ -72,7 +72,7 @@ public class SignInActivity extends AppCompatActivity {
 
                                 if ("AdminPass01".equals(pass) && "fardusjannatul2731@gmail.com".equals(email)) {
                                     Toast.makeText(getApplicationContext(), "Admin Login successful!!", Toast.LENGTH_SHORT).show();
-                                    startActivity(new Intent(getApplicationContext(), ReadActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
+                                    startActivity(new Intent(getApplicationContext(), AdminHomePage.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
                                 } else {
                                     Toast.makeText(getApplicationContext(), "Login successful!!", Toast.LENGTH_SHORT).show();
                                     startActivity(new Intent(getApplicationContext(), HomePageActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));

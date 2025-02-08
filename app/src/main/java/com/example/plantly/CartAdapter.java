@@ -45,7 +45,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
 
         Picasso.get().load(item.getImageUrl()).into(holder.cartItemImageView);
 
-        // Checkbox selection
+
         holder.checkboxCartItem.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if (isChecked) {
                 selectedItems.add(item);
@@ -54,7 +54,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
             }
         });
 
-        // Increase quantity
+
         holder.btnIncrease.setOnClickListener(v -> {
             int quantity = item.getQuantity();
             quantity++;
@@ -63,7 +63,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
             updatePrice(holder.cartItemPriceTextView, item);
         });
 
-        // Decrease quantity
+
         holder.btnDecrease.setOnClickListener(v -> {
             int quantity = item.getQuantity();
             if (quantity > 1) {

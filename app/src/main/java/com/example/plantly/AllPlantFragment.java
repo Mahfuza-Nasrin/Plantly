@@ -27,27 +27,27 @@ public class AllPlantFragment extends Fragment {
     private PlantAdapter adapter;
 
     public AllPlantFragment() {
-        // Required empty public constructor
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+
         View view = inflater.inflate(R.layout.fragment_all_plant, container, false);
 
-        // Initialize RecyclerView
+
         recyclerView = view.findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2)); // Grid layout with 2 columns
 
-        // Initialize Firebase reference
+
         reference = FirebaseDatabase.getInstance().getReference().child("Plant Items");
 
-        // Initialize and set adapter
+
         adapter = new PlantAdapter(getContext(), arrayList);
         recyclerView.setAdapter(adapter);
 
-        // Load all plants
+
         loadAllPlants();
 
         return view;
@@ -66,14 +66,12 @@ public class AllPlantFragment extends Fragment {
                         }
                     }
                     adapter.notifyDataSetChanged();
-                } else {
-                    Log.d("AllPlantFragment", "No plants found!");
                 }
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                Log.e("AllPlantFragment", "Error: " + error.getMessage());
+
             }
         });
     }
@@ -98,14 +96,12 @@ public class AllPlantFragment extends Fragment {
                         }
                     }
                     adapter.notifyDataSetChanged();
-                } else {
-                    Log.d("AllPlantFragment", "No plants match the query: " + query);
                 }
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                Log.e("AllPlantFragment", "Search Error: " + error.getMessage());
+
             }
         });
     }

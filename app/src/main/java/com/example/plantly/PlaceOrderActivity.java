@@ -140,7 +140,7 @@ public class PlaceOrderActivity extends AppCompatActivity {
                 orderItem.put("name", item.getName());
                 orderItem.put("quantity", item.getQuantity());
                 orderItem.put("price", item.getPrice());
-                orderItem.put("imageUrl", item.getImageUrl()); // Store image URL
+                orderItem.put("imageUrl", item.getImageUrl()); // Storing image URL
                 orderItemsList.add(orderItem);
             }
         }

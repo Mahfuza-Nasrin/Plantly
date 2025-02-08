@@ -121,21 +121,12 @@ public class SignInActivity extends AppCompatActivity {
 
     }
     private void sendPasswordResetEmail(String email) {
-        auth.sendPasswordResetEmail(email)
-                .addOnCompleteListener(task -> {
+        auth.sendPasswordResetEmail(email).addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
-                        Toast.makeText(
-                                SignInActivity.this,
-                                "Password reset email sent to " + email,
-                                Toast.LENGTH_SHORT
-                        ).show();
+                        Toast.makeText(SignInActivity.this, "Password reset email sent to " + email, Toast.LENGTH_SHORT).show();
                     } else {
                         if (task.getException() != null) {
-                            Toast.makeText(
-                                    SignInActivity.this,
-                                    "Error: " + task.getException().getMessage(),
-                                    Toast.LENGTH_SHORT
-                            ).show();
+                            Toast.makeText(SignInActivity.this, "Error: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                         }
                     }
                 });

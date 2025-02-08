@@ -43,7 +43,7 @@ public class OutdoorPlantFragment extends Fragment {
 
 
         reference = FirebaseDatabase.getInstance().getReference().child("Plant Items");
-        Query query = reference.orderByChild("plantType").equalTo("Outdoor"); // Filter by "type" field
+        Query query = reference.orderByChild("plantType").equalTo("Outdoor");
 
         query.addValueEventListener(new ValueEventListener() {
             @Override

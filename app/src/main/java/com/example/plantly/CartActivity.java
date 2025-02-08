@@ -66,7 +66,7 @@ public class CartActivity extends AppCompatActivity {
         btnReviewAddress.setOnClickListener(v -> {
             if (!cartItems.isEmpty()) {
                 Intent intent = new Intent(CartActivity.this, PlaceOrderActivity.class);
-                intent.putExtra("orderItems", cartItems); // Ensure CartItem implements Serializable
+                intent.putExtra("orderItems", cartItems);
                 startActivity(intent);
 
             } else {

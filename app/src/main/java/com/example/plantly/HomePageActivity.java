@@ -38,11 +38,11 @@ public class HomePageActivity extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_home_page);
 
-        // Initialize Firebase Auth
+
         auth = FirebaseAuth.getInstance();
         currentUser = auth.getCurrentUser();
 
-        // Greeting text
+
         tvGreeting = findViewById(R.id.tvGreeting);
         if (currentUser != null) {
             String userId = currentUser.getUid();
